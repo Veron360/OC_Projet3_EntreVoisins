@@ -44,6 +44,7 @@ public class NeighboursListTest {
 
     // This is fixed
     private static int ITEMS_COUNT = 12;
+    private static int ITEMS_COUNT2 = 0;
 
     private ListNeighbourActivity mActivity;
     private List<Neighbour> Neighbours;
@@ -112,11 +113,15 @@ public class NeighboursListTest {
     @Test
     public void myNeighbours_GetFavorite(){
         String neighbours = Neighbours.get(0).getName();
+        onView(withText(R.string.tab_favorites_title)).perform(click());
+        onView(allOf(ViewMatchers.withId(R.id.list_neighbours), isDisplayed())).check(withItemCount(ITEMS_COUNT2));
+        onView(withText(R.string.tab_neighbour_title)).perform(click());
         onView(allOf(ViewMatchers.withId(R.id.list_neighbours), isDisplayed()))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(ViewMatchers.withId(R.id.button_favorites)).perform(click());
         Espresso.pressBack();
         onView(withText(R.string.tab_favorites_title)).perform(click());
+        onView(allOf(ViewMatchers.withId(R.id.list_neighbours), isDisplayed())).check(withItemCount(ITEMS_COUNT2+1));
         onView(allOf(ViewMatchers.withId(R.id.list_neighbours), isDisplayed()))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(ViewMatchers.withId(R.id.neighbours_name_Profile)).check(matches(withText(neighbours)));
